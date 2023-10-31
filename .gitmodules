@@ -8,6 +8,7 @@
 [submodule "biap-client-node-js"]
 	path = biap-client-node-js
 	url = https://github.com/hanabitech/biap-client-node-js.git
+	branch = master
 [submodule "py-ondc-protocol"]
 	path = py-ondc-protocol
 	url = https://github.com/ONDC-Official/py-protocol-layer.git
