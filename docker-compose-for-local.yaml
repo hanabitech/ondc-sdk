@@ -93,7 +93,7 @@ services:
         BAP_PRIVATE_KEY: ${BAP_PRIVATE_KEY}
         BAP_PUBLIC_KEY: ${BAP_PUBLIC_KEY}
         BAP_UNIQUE_KEY_ID: ${BAP_UNIQUE_KEY_ID}
-        PORT: 3000
+        PORT: 3939
         NODE_DEV: dev
         REGISTRY_BASE_URL: ${REGISTRY_BASE_URL}
         ENV_TYPE: ${ENV_TYPE}
@@ -101,9 +101,9 @@ services:
         BAP_FINDER_FEE_AMOUNT: ${BAP_FINDER_FEE_AMOUNT}
         SSE_TIMEOUT: ${SSE_TIMEOUT}
     ports:
-      - 3000:3000
+      - 3939:3939
     expose:
-      - 3000
+      - 3000 3939
     depends_on:
       - mongo
 
