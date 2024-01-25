@@ -1,0 +1,50 @@
+# cloudbuild.yaml
+steps:
+  # Step 1: Build the Docker image and tag it with the commit SHA
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      [
+        "build",
+        "-t",
+        "${_DOCKER_CONTAINER_REGISTRY}/$PROJECT_ID/${_ARTIFACT_REGISTRY_REPO_NAME}/${_SERVICE_NAME}:$SHORT_SHA",
+        ".",
+      ]
+
+  # Step 2: Push the image to Google Artifact Registry
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      [
+        "push",
+        "${_DOCKER_CONTAINER_REGISTRY}/$PROJECT_ID/${_ARTIFACT_REGISTRY_REPO_NAME}/${_SERVICE_NAME}:$SHORT_SHA",
+      ]
+
+  # Step 3: Deploy to Google Kubernetes Engine
+  - name: "gcr.io/cloud-builders/kubectl"
+    args:
+      - "set"
+      - "image"
+      - "deployment/${_SERVICE_NAME}"
+      - "${_SERVICE_NAME}=${_DOCKER_CONTAINER_REGISTRY}/$PROJECT_ID/${_ARTIFACT_REGISTRY_REPO_NAME}/${_SERVICE_NAME}:$SHORT_SHA"
+      - "--namespace=${_NAME_SPACE}"
+    env:
+      - "CLOUDSDK_COMPUTE_ZONE=${_GKE_ZONE}"
+      - "CLOUDSDK_CONTAINER_CLUSTER=${_GKE_CLUSTER_NAME}"
+
+images:
+  - "${_DOCKER_CONTAINER_REGISTRY}/$PROJECT_ID/${_ARTIFACT_REGISTRY_REPO_NAME}/${_SERVICE_NAME}:$SHORT_SHA"
+
+timeout: "1600s"
+
+serviceAccount: "projects/$PROJECT_ID/serviceAccounts/${_SERVICE_ACCOUNT}"
+
+options:
+  logging: CLOUD_LOGGING_ONLY
+
+substitutions:
+  _GKE_ZONE: asia-south1
+  _DOCKER_CONTAINER_REGISTRY: asia-south1-docker.pkg.dev
+  _GKE_CLUSTER_NAME: hanabi-ondc-sdk-cluster
+  _SERVICE_NAME: hanabi-ondc-sdk
+  _ARTIFACT_REGISTRY_REPO_NAME: hanabi-ondc-sdk
+  _NAME_SPACE: hanabi-ondc-sdk
+  _SERVICE_ACCOUNT: 687184576367-compute@developer.gserviceaccount.com
