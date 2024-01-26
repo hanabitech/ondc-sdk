@@ -5,6 +5,38 @@ steps:
     args:
       [
         "build",
+        "--build-arg=ONDC_BASE_API_URL=${_ONDC_BASE_API_URL}",
+        "--build-arg=JUSPAY_SECRET_KEY_PATH=${_JUSPAY_SECRET_KEY_PATH}",
+        "--build-arg=JUSPAY_BASE_URL=${_JUSPAY_BASE_URL}",
+        "--build-arg=JUSPAY_MERCHANT_ID=${_JUSPAY_MERCHANT_ID}",
+        "--build-arg=JUSPAY_WEBHOOK_USERNAME=${_JUSPAY_WEBHOOK_USERNAME}",
+        "--build-arg=JUSPAY_WEBHOOK_PASSWORD=${_JUSPAY_WEBHOOK_PASSWORD}",
+        "--build-arg=JUSPAY_API_KEY=${_JUSPAY_API_KEY}",
+        "--build-arg=FIREBASE_ADMIN_SERVICE_ACCOUNT=${_FIREBASE_ADMIN_SERVICE_ACCOUNT}",
+        "--build-arg=DOMAIN=${_DOMAIN}",
+        "--build-arg=CITY=${_CITY}",
+        "--build-arg=COUNTRY=${_COUNTRY}",
+        "--build-arg=BAP_ID=${_BAP_ID}",
+        "--build-arg=BAP_URL=${_BAP_URL}",
+        "--build-arg=PROTOCOL_BASE_URL=${_PROTOCOL_BASE_URL}",
+        "--build-arg=DB_CONNECTION_STRING=${_DB_CONNECTION_STRING}",
+        "--build-arg=BAP_PRIVATE_KEY=${_BAP_PRIVATE_KEY}",
+        "--build-arg=BAP_PUBLIC_KEY=${_BAP_PUBLIC_KEY}",
+        "--build-arg=BAP_UNIQUE_KEY_ID=${_BAP_UNIQUE_KEY_ID}",
+        "--build-arg=REGISTRY_BASE_URL=${_REGISTRY_BASE_URL}",
+        "--build-arg=ENV_TYPE=${_ENV_TYPE}",
+        "--build-arg=BAP_FINDER_FEE_TYPE=${_BAP_FINDER_FEE_TYPE}",
+        "--build-arg=BAP_FINDER_FEE_AMOUNT=${_BAP_FINDER_FEE_AMOUNT}",
+        "--build-arg=SSE_TIMEOUT=${_SSE_TIMEOUT}",
+        "--build-arg=MMI_CLIENT_ID=${_MMI_CLIENT_ID}",
+        "--build-arg=MMI_CLIENT_SECRET=${_MMI_CLIENT_SECRET}",
+        "--build-arg=PROTOCOL_ENV=${_PROTOCOL_ENV}",
+        "--build-arg=NODE_ENV=${_NODE_ENV}",
+        "--build-arg=PROTOCOL_HOST=${_PROTOCOL_HOST}",
+        "--build-arg=CLIENT_WEBHOOK_ENDPOINT=${_CLIENT_WEBHOOK_ENDPOINT}",
+        "--build-arg=MONGO_DATABASE_HOST=${_MONGO_DATABASE_HOST}",
+        "--build-arg=VERIFICATION_ENABLE=${_VERIFICATION_ENABLE}",
+        "--build-arg=RABBITMQ_HOST=${_RABBITMQ_HOST}",
         "-t",
         "${_DOCKER_CONTAINER_REGISTRY}/$PROJECT_ID/${_ARTIFACT_REGISTRY_REPO_NAME}/${_SERVICE_NAME}:$SHORT_SHA",
         ".",
@@ -48,3 +80,33 @@ substitutions:
   _ARTIFACT_REGISTRY_REPO_NAME: hanabi-ondc-sdk
   _NAME_SPACE: hanabi-ondc-sdk
   _SERVICE_ACCOUNT: 687184576367-compute@developer.gserviceaccount.com
+  _ONDC_BASE_API_URL: https://ref-app-buyer-staging-v2.ondc.org
+  _JUSPAY_SECRET_KEY_PATH: ./config/dev/juspay.pem
+  _DOMAIN: nic2004:52110
+  _CITY: *
+  _COUNTRY: IND
+  _PROTOCOL_BASE_URL: https://ondc-protocol.hanabitech.com
+  _REGISTRY_BASE_URL: https://staging.registry.ondc.org
+  _ENV_TYPE: STAGING
+  _BAP_FINDER_FEE_TYPE: percent
+  _BAP_FINDER_FEE_AMOUNT: 3.0
+  _SSE_TIMEOUT: 5000
+  _DB_CONNECTION_STRING: mongodb://mongo:27017/sandbox_client
+  _PROTOCOL_ENV: prod
+  _NODE_ENV: prod
+  _PROTOCOL_HOST: ref-app-buyer-staging-v2.ondc.org
+  _CLIENT_WEBHOOK_ENDPOINT: https://ref-app-buyer-staging-v2.ondc.org/clientApis/response
+  _FIREBASE_ADMIN_SERVICE_ACCOUNT: config/dev/firebase-service-account.json
+  _MONGO_DATABASE_HOST: mongo
+  _VERIFICATION_ENABLE: False
+  _RABBITMQ_HOST: rabbitmq
+  # _BAP_ID: This is substituted in Cloud Build trigger setup
+  # _BAP_URL: This is substituted in Cloud Build trigger setup
+  # _JUSPAY_BASE_URL: This is substituted in Cloud Build trigger setup
+  # _JUSPAY_MERCHANT_ID: This is substituted in Cloud Build trigger setup
+  # _JUSPAY_API_KEY: This is substituted in Cloud Build trigger setup
+  # _JUSPAY_WEBHOOK_USERNAME: This is substituted in Cloud Build trigger setup
+  # _JUSPAY_WEBHOOK_PASSWORD: This is substituted in Cloud Build trigger setup
+  # _BAP_PRIVATE_KEY: This is substituted in Cloud Build trigger setup
+  # _BAP_PUBLIC_KEY: This is substituted in Cloud Build trigger setup
+  # _BAP_UNIQUE_KEY_ID: This is substituted in Cloud Build trigger setup

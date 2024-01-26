@@ -9,63 +9,63 @@ services:
     volumes:
       - "./data:/data/db"
 
-  mmi-client:
-    image: navdeep710/ondc-ancillary-services:v3
-    container_name: map-client
-    environment:
-      ENV: prod
-      MMI_CLIENT_ID: ${MMI_CLIENT_ID}
-      MMI_CLIENT_SECRET: ${MMI_CLIENT_SECRET}
-      MMI_ADVANCE_API_KEY: ${MMI_ADVANCE_API_KEY}
-      KNOWLARITY_NUMBER: ${KNOWLARITY_NUMBER}
-      KNOWLARITY_AGENT_NUMBER: ${KNOWLARITY_AGENT_NUMBER}
-      KNOWLARITY_API_KEY: ${KNOWLARITY_API_KEY}
-      KNOWLARITY_AUTHORIZATION_HEADER_KEY: ${KNOWLARITY_AUTHORIZATION_HEADER_KEY}
-    ports:
-      - 8000:8000
-    expose:
-      - 8000
+  # mmi-client:
+  #   image: navdeep710/ondc-ancillary-services:v3
+  #   container_name: map-client
+  #   environment:
+  #     ENV: prod
+  #     MMI_CLIENT_ID: ${MMI_CLIENT_ID}
+  #     MMI_CLIENT_SECRET: ${MMI_CLIENT_SECRET}
+  #     MMI_ADVANCE_API_KEY: ${MMI_ADVANCE_API_KEY}
+  #     KNOWLARITY_NUMBER: ${KNOWLARITY_NUMBER}
+  #     KNOWLARITY_AGENT_NUMBER: ${KNOWLARITY_AGENT_NUMBER}
+  #     KNOWLARITY_API_KEY: ${KNOWLARITY_API_KEY}
+  #     KNOWLARITY_AUTHORIZATION_HEADER_KEY: ${KNOWLARITY_AUTHORIZATION_HEADER_KEY}
+  #   ports:
+  #     - 8000:8000
+  #   expose:
+  #     - 8000
 
-  nginx:
-    build:
-      context: biap-app-ui-front
-      dockerfile: Dockerfile
-      args:
-        REACT_APP_BASE_URL: ${REACT_APP_BASE_URL}
-        REACT_APP_MMI_BASE_URL: ${REACT_APP_MMI_BASE_URL}
-        REACT_APP_FIREBASE_API_KEY: ${REACT_APP_FIREBASE_API_KEY}
-        REACT_APP_FIREBASE_AUTH_DOMAIN: ${REACT_APP_FIREBASE_AUTH_DOMAIN}
-        REACT_APP_GOOGLE_API_KEY: ${REACT_APP_GOOGLE_API_KEY}
-        REACT_APP_JUSTPAY_CLIENT_AND_MERCHANT_KEY: ${REACT_APP_JUSTPAY_CLIENT_AND_MERCHANT_KEY}
-        REACT_APP_MERCHANT_KEY_ID: ${REACT_APP_MERCHANT_KEY_ID}
-        REACT_APP_PAYMENT_SDK_ENV: ${REACT_APP_PAYMENT_SDK_ENV}
-        REACT_APP_PAYMENT_SERVICE_URL: ${REACT_APP_PAYMENT_SERVICE_URL}
-        REGISTRY_BASE_URL: ${REGISTRY_BASE_URL}
-    container_name: biap-app-ui-front
-    #    depends_on:
-    #      - biap-bap-client
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "100m"
-        max-file: "3"
-    environment:
-      REACT_APP_BASE_URL: ${REACT_APP_BASE_URL}
-      REACT_APP_MMI_BASE_URL: ${REACT_APP_MMI_BASE_URL}
-      REACT_APP_FIREBASE_API_KEY: ${REACT_APP_FIREBASE_API_KEY}
-      REACT_APP_FIREBASE_AUTH_DOMAIN: ${REACT_APP_FIREBASE_AUTH_DOMAIN}
-      REACT_APP_GOOGLE_API_KEY: ${REACT_APP_GOOGLE_API_KEY}
-    depends_on:
-      - mmi-client
-      - biap-client-node-js
-    expose:
-      - 80
-    ports:
-      - 80:80
-      - 443:443
-    volumes:
-      - ./data/certbot/conf:/etc/letsencrypt
-      - ./data/certbot/www:/var/www/certbot
+  # nginx:
+  #   build:
+  #     context: biap-app-ui-front
+  #     dockerfile: Dockerfile
+  #     args:
+  #       REACT_APP_BASE_URL: ${REACT_APP_BASE_URL}
+  #       REACT_APP_MMI_BASE_URL: ${REACT_APP_MMI_BASE_URL}
+  #       REACT_APP_FIREBASE_API_KEY: ${REACT_APP_FIREBASE_API_KEY}
+  #       REACT_APP_FIREBASE_AUTH_DOMAIN: ${REACT_APP_FIREBASE_AUTH_DOMAIN}
+  #       REACT_APP_GOOGLE_API_KEY: ${REACT_APP_GOOGLE_API_KEY}
+  #       REACT_APP_JUSTPAY_CLIENT_AND_MERCHANT_KEY: ${REACT_APP_JUSTPAY_CLIENT_AND_MERCHANT_KEY}
+  #       REACT_APP_MERCHANT_KEY_ID: ${REACT_APP_MERCHANT_KEY_ID}
+  #       REACT_APP_PAYMENT_SDK_ENV: ${REACT_APP_PAYMENT_SDK_ENV}
+  #       REACT_APP_PAYMENT_SERVICE_URL: ${REACT_APP_PAYMENT_SERVICE_URL}
+  #       REGISTRY_BASE_URL: ${REGISTRY_BASE_URL}
+  #   container_name: biap-app-ui-front
+  #   #    depends_on:
+  #   #      - biap-bap-client
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "100m"
+  #       max-file: "3"
+  #   environment:
+  #     REACT_APP_BASE_URL: ${REACT_APP_BASE_URL}
+  #     REACT_APP_MMI_BASE_URL: ${REACT_APP_MMI_BASE_URL}
+  #     REACT_APP_FIREBASE_API_KEY: ${REACT_APP_FIREBASE_API_KEY}
+  #     REACT_APP_FIREBASE_AUTH_DOMAIN: ${REACT_APP_FIREBASE_AUTH_DOMAIN}
+  #     REACT_APP_GOOGLE_API_KEY: ${REACT_APP_GOOGLE_API_KEY}
+  #   depends_on:
+  #     - mmi-client
+  #     - biap-client-node-js
+  #   expose:
+  #     - 80
+  #   ports:
+  #     - 80:80
+  #     - 443:443
+  #   volumes:
+  #     - ./data/certbot/conf:/etc/letsencrypt
+  #     - ./data/certbot/www:/var/www/certbot
 
   certbot:
     image: certbot/certbot
@@ -119,37 +119,37 @@ services:
     depends_on:
       - mongo
 
-  biap-igm-node-js:
-    build:
-      context: biap-igm-node-js
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "100m"
-        max-file: "3"
-    environment:
-      DB_CONNECTION_STRING: ${DB_CONNECTION_STRING}
-      PROTOCOL_BASE_URL: ${PROTOCOL_BASE_URL}
-      SSE_TIMEOUT: ${SSE_TIMEOUT}
-      DOMAIN: ${DOMAIN}
-      COUNTRY: ${COUNTRY}
-      BAP_ID: ${BAP_ID}
-      EXPECTED_RESPONSE_TIME: ${EXPECTED_RESPONSE_TIME}
-      EXPECTED_RESOLUTION_TIME: ${EXPECTED_RESOLUTION_TIME}
-      BUGZILLA_API_KEY: ${BUGZILLA_API_KEY}
-      BUGZILLA_SERVICE_URI: ${BUGZILLA_SERVICE_URI}
-      BAP_URL: ${BAP_URL}
-      VOLUME_IMAGES_BASE_URL: ${VOLUME_IMAGES_BASE_URL}
-    container_name: biap-igm-node-js
-    ports:
-      - "8989:6969"
-    expose:
-      - 8989
-    depends_on:
-      - mongo
-    volumes:
-      - "./images:/app/images"
-    restart: always
+  # biap-igm-node-js:
+  #   build:
+  #     context: biap-igm-node-js
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "100m"
+  #       max-file: "3"
+  #   environment:
+  #     DB_CONNECTION_STRING: ${DB_CONNECTION_STRING}
+  #     PROTOCOL_BASE_URL: ${PROTOCOL_BASE_URL}
+  #     SSE_TIMEOUT: ${SSE_TIMEOUT}
+  #     DOMAIN: ${DOMAIN}
+  #     COUNTRY: ${COUNTRY}
+  #     BAP_ID: ${BAP_ID}
+  #     EXPECTED_RESPONSE_TIME: ${EXPECTED_RESPONSE_TIME}
+  #     EXPECTED_RESOLUTION_TIME: ${EXPECTED_RESOLUTION_TIME}
+  #     BUGZILLA_API_KEY: ${BUGZILLA_API_KEY}
+  #     BUGZILLA_SERVICE_URI: ${BUGZILLA_SERVICE_URI}
+  #     BAP_URL: ${BAP_URL}
+  #     VOLUME_IMAGES_BASE_URL: ${VOLUME_IMAGES_BASE_URL}
+  #   container_name: biap-igm-node-js
+  #   ports:
+  #     - "8989:6969"
+  #   expose:
+  #     - 8989
+  #   depends_on:
+  #     - mongo
+  #   volumes:
+  #     - "./images:/app/images"
+  #   restart: always
 
   py-ondc-protocol:
     logging:
@@ -205,41 +205,41 @@ services:
       - 15672:15672
 
 
-  bugzilla-node-backend:
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "100m"
-        max-file: "3"
-    container_name: bugzilla-node-dev
-    build:
-      context: biap-bugzilla-service
-      dockerfile: Dockerfile.production
-    environment:
-      ENV: prod
-      BUGZILLA_API_KEY: ${BUGZILLA_API_KEY}
-      BUGZILLA_BASE_URI: ${BUGZILLA_BASE_URI}
-      BUGZILLA_ADMIN_EMAIL: ${BUGZILLA_ADMIN_EMAIL}
-    ports:
-      - "8001:8001"
-    expose:
-      - 8001
-    restart: always
+  # bugzilla-node-backend:
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "100m"
+  #       max-file: "3"
+  #   container_name: bugzilla-node-dev
+  #   build:
+  #     context: biap-bugzilla-service
+  #     dockerfile: Dockerfile.production
+  #   environment:
+  #     ENV: prod
+  #     BUGZILLA_API_KEY: ${BUGZILLA_API_KEY}
+  #     BUGZILLA_BASE_URI: ${BUGZILLA_BASE_URI}
+  #     BUGZILLA_ADMIN_EMAIL: ${BUGZILLA_ADMIN_EMAIL}
+  #   ports:
+  #     - "8001:8001"
+  #   expose:
+  #     - 8001
+  #   restart: always
 
-  bugzilla-dev-service:
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "100m"
-        max-file: "3"
-    build:
-      context: ./biap-bugzilla-service/bugzilla-main
-      dockerfile: Dockerfile
-    environment:
-      BUGZILLA_WWW: /var/www/html/bugzilla/
-      BUGZILLA_ADMIN_EMAIL: ${BUGZILLA_ADMIN_EMAIL}
-    container_name: bugzilla-dev-service
-    image: shameerkc/bugzilla-dev-sqlite
-    ports:
-      - "90:80"
-      - "5989:5900"
+  # bugzilla-dev-service:
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "100m"
+  #       max-file: "3"
+  #   build:
+  #     context: ./biap-bugzilla-service/bugzilla-main
+  #     dockerfile: Dockerfile
+  #   environment:
+  #     BUGZILLA_WWW: /var/www/html/bugzilla/
+  #     BUGZILLA_ADMIN_EMAIL: ${BUGZILLA_ADMIN_EMAIL}
+  #   container_name: bugzilla-dev-service
+  #   image: shameerkc/bugzilla-dev-sqlite
+  #   ports:
+  #     - "90:80"
+  #     - "5989:5900"
