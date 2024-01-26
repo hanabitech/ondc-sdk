@@ -83,14 +83,14 @@ substitutions:
   _ONDC_BASE_API_URL: https://ref-app-buyer-staging-v2.ondc.org
   _JUSPAY_SECRET_KEY_PATH: ./config/dev/juspay.pem
   _DOMAIN: nic2004:52110
-  _CITY: *
+  _CITY: "*"
   _COUNTRY: IND
   _PROTOCOL_BASE_URL: https://ondc-protocol.hanabitech.com
   _REGISTRY_BASE_URL: https://staging.registry.ondc.org
   _ENV_TYPE: STAGING
   _BAP_FINDER_FEE_TYPE: percent
-  _BAP_FINDER_FEE_AMOUNT: 3.0
-  _SSE_TIMEOUT: 5000
+  _BAP_FINDER_FEE_AMOUNT: "3.0"
+  _SSE_TIMEOUT: "5000"
   _DB_CONNECTION_STRING: mongodb://mongo:27017/sandbox_client
   _PROTOCOL_ENV: prod
   _NODE_ENV: prod
@@ -98,7 +98,7 @@ substitutions:
   _CLIENT_WEBHOOK_ENDPOINT: https://ref-app-buyer-staging-v2.ondc.org/clientApis/response
   _FIREBASE_ADMIN_SERVICE_ACCOUNT: config/dev/firebase-service-account.json
   _MONGO_DATABASE_HOST: mongo
-  _VERIFICATION_ENABLE: False
+  _VERIFICATION_ENABLE: "False"
   _RABBITMQ_HOST: rabbitmq
   # _BAP_ID: This is substituted in Cloud Build trigger setup
   # _BAP_URL: This is substituted in Cloud Build trigger setup
