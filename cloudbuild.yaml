@@ -1,6 +1,22 @@
 # cloudbuild.yaml
 steps:
-  # Step 1: Build the Docker image and tag it with the commit SHA
+  # Step 1: Build the Docker images and tag it with the commit SHA
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      [
+        "build",
+        "-t",
+        "${_DOCKER_CONTAINER_REGISTRY}/$PROJECT_ID/${_MONGO_SERVICE_ARTIFACT_REGISTRY_REPO_NAME}/${_SERVICE_NAME_MONGO}:$SHORT_SHA",
+        "./",
+      ]
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      [
+        "build",
+        "-t",
+        "${_DOCKER_CONTAINER_REGISTRY}/$PROJECT_ID/${_CERTBOT_SERVICE_ARTIFACT_REGISTRY_REPO_NAME}/${_SERVICE_NAME_CERTBOT}:$SHORT_SHA",
+        "./",
+      ]
   - name: "gcr.io/cloud-builders/docker"
     args:
       [
@@ -38,8 +54,96 @@ steps:
         "--build-arg=VERIFICATION_ENABLE=${_VERIFICATION_ENABLE}",
         "--build-arg=RABBITMQ_HOST=${_RABBITMQ_HOST}",
         "-t",
-        "${_DOCKER_CONTAINER_REGISTRY}/$PROJECT_ID/${_ARTIFACT_REGISTRY_REPO_NAME}/${_SERVICE_NAME}:$SHORT_SHA",
-        ".",
+        "${_DOCKER_CONTAINER_REGISTRY}/$PROJECT_ID/${_BIAP_CLIEN_NODE_JS_SERVICE_ARTIFACT_REGISTRY_REPO_NAME}/${_SERVICE_NAME_BIAP_CLIEN_NODE_JS}:$SHORT_SHA",
+        "./",
+      ]
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      [
+        "build",
+        "--build-arg=ONDC_BASE_API_URL=${_ONDC_BASE_API_URL}",
+        "--build-arg=JUSPAY_SECRET_KEY_PATH=${_JUSPAY_SECRET_KEY_PATH}",
+        "--build-arg=JUSPAY_BASE_URL=${_JUSPAY_BASE_URL}",
+        "--build-arg=JUSPAY_MERCHANT_ID=${_JUSPAY_MERCHANT_ID}",
+        "--build-arg=JUSPAY_WEBHOOK_USERNAME=${_JUSPAY_WEBHOOK_USERNAME}",
+        "--build-arg=JUSPAY_WEBHOOK_PASSWORD=${_JUSPAY_WEBHOOK_PASSWORD}",
+        "--build-arg=JUSPAY_API_KEY=${_JUSPAY_API_KEY}",
+        "--build-arg=FIREBASE_ADMIN_SERVICE_ACCOUNT=${_FIREBASE_ADMIN_SERVICE_ACCOUNT}",
+        "--build-arg=DOMAIN=${_DOMAIN}",
+        "--build-arg=CITY=${_CITY}",
+        "--build-arg=COUNTRY=${_COUNTRY}",
+        "--build-arg=BAP_ID=${_BAP_ID}",
+        "--build-arg=BAP_URL=${_BAP_URL}",
+        "--build-arg=PROTOCOL_BASE_URL=${_PROTOCOL_BASE_URL}",
+        "--build-arg=DB_CONNECTION_STRING=${_DB_CONNECTION_STRING}",
+        "--build-arg=BAP_PRIVATE_KEY=${_BAP_PRIVATE_KEY}",
+        "--build-arg=BAP_PUBLIC_KEY=${_BAP_PUBLIC_KEY}",
+        "--build-arg=BAP_UNIQUE_KEY_ID=${_BAP_UNIQUE_KEY_ID}",
+        "--build-arg=REGISTRY_BASE_URL=${_REGISTRY_BASE_URL}",
+        "--build-arg=ENV_TYPE=${_ENV_TYPE}",
+        "--build-arg=BAP_FINDER_FEE_TYPE=${_BAP_FINDER_FEE_TYPE}",
+        "--build-arg=BAP_FINDER_FEE_AMOUNT=${_BAP_FINDER_FEE_AMOUNT}",
+        "--build-arg=SSE_TIMEOUT=${_SSE_TIMEOUT}",
+        "--build-arg=MMI_CLIENT_ID=${_MMI_CLIENT_ID}",
+        "--build-arg=MMI_CLIENT_SECRET=${_MMI_CLIENT_SECRET}",
+        "--build-arg=PROTOCOL_ENV=${_PROTOCOL_ENV}",
+        "--build-arg=NODE_ENV=${_NODE_ENV}",
+        "--build-arg=PROTOCOL_HOST=${_PROTOCOL_HOST}",
+        "--build-arg=CLIENT_WEBHOOK_ENDPOINT=${_CLIENT_WEBHOOK_ENDPOINT}",
+        "--build-arg=MONGO_DATABASE_HOST=${_MONGO_DATABASE_HOST}",
+        "--build-arg=VERIFICATION_ENABLE=${_VERIFICATION_ENABLE}",
+        "--build-arg=RABBITMQ_HOST=${_RABBITMQ_HOST}",
+        "-t",
+        "${_DOCKER_CONTAINER_REGISTRY}/$PROJECT_ID/${_PY_ONDC_PROTOCOL_SERVICE_ARTIFACT_REGISTRY_REPO_NAME}/${_SERVICE_NAME_PY_ONDC_PROTOCOL}:$SHORT_SHA",
+        "./",
+      ]
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      [
+        "build",
+        "--build-arg=ONDC_BASE_API_URL=${_ONDC_BASE_API_URL}",
+        "--build-arg=JUSPAY_SECRET_KEY_PATH=${_JUSPAY_SECRET_KEY_PATH}",
+        "--build-arg=JUSPAY_BASE_URL=${_JUSPAY_BASE_URL}",
+        "--build-arg=JUSPAY_MERCHANT_ID=${_JUSPAY_MERCHANT_ID}",
+        "--build-arg=JUSPAY_WEBHOOK_USERNAME=${_JUSPAY_WEBHOOK_USERNAME}",
+        "--build-arg=JUSPAY_WEBHOOK_PASSWORD=${_JUSPAY_WEBHOOK_PASSWORD}",
+        "--build-arg=JUSPAY_API_KEY=${_JUSPAY_API_KEY}",
+        "--build-arg=FIREBASE_ADMIN_SERVICE_ACCOUNT=${_FIREBASE_ADMIN_SERVICE_ACCOUNT}",
+        "--build-arg=DOMAIN=${_DOMAIN}",
+        "--build-arg=CITY=${_CITY}",
+        "--build-arg=COUNTRY=${_COUNTRY}",
+        "--build-arg=BAP_ID=${_BAP_ID}",
+        "--build-arg=BAP_URL=${_BAP_URL}",
+        "--build-arg=PROTOCOL_BASE_URL=${_PROTOCOL_BASE_URL}",
+        "--build-arg=DB_CONNECTION_STRING=${_DB_CONNECTION_STRING}",
+        "--build-arg=BAP_PRIVATE_KEY=${_BAP_PRIVATE_KEY}",
+        "--build-arg=BAP_PUBLIC_KEY=${_BAP_PUBLIC_KEY}",
+        "--build-arg=BAP_UNIQUE_KEY_ID=${_BAP_UNIQUE_KEY_ID}",
+        "--build-arg=REGISTRY_BASE_URL=${_REGISTRY_BASE_URL}",
+        "--build-arg=ENV_TYPE=${_ENV_TYPE}",
+        "--build-arg=BAP_FINDER_FEE_TYPE=${_BAP_FINDER_FEE_TYPE}",
+        "--build-arg=BAP_FINDER_FEE_AMOUNT=${_BAP_FINDER_FEE_AMOUNT}",
+        "--build-arg=SSE_TIMEOUT=${_SSE_TIMEOUT}",
+        "--build-arg=MMI_CLIENT_ID=${_MMI_CLIENT_ID}",
+        "--build-arg=MMI_CLIENT_SECRET=${_MMI_CLIENT_SECRET}",
+        "--build-arg=PROTOCOL_ENV=${_PROTOCOL_ENV}",
+        "--build-arg=NODE_ENV=${_NODE_ENV}",
+        "--build-arg=PROTOCOL_HOST=${_PROTOCOL_HOST}",
+        "--build-arg=CLIENT_WEBHOOK_ENDPOINT=${_CLIENT_WEBHOOK_ENDPOINT}",
+        "--build-arg=MONGO_DATABASE_HOST=${_MONGO_DATABASE_HOST}",
+        "--build-arg=VERIFICATION_ENABLE=${_VERIFICATION_ENABLE}",
+        "--build-arg=RABBITMQ_HOST=${_RABBITMQ_HOST}",
+        "-t",
+        "${_DOCKER_CONTAINER_REGISTRY}/$PROJECT_ID/${_PY_ONDC_CONSUMER_SERVICE_ARTIFACT_REGISTRY_REPO_NAME}/${_SERVICE_NAME_PY_ONDC_CONSUMER}:$SHORT_SHA",
+        "./",
+      ]
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      [
+        "build",
+        "-t",
+        "${_DOCKER_CONTAINER_REGISTRY}/$PROJECT_ID/${_RABBITMQ_SERVICE_ARTIFACT_REGISTRY_REPO_NAME}/${_SERVICE_NAME_RABBITMQ}:$SHORT_SHA",
+        "./",
       ]
 
   # Step 2: Push the image to Google Artifact Registry
@@ -47,7 +151,38 @@ steps:
     args:
       [
         "push",
-        "${_DOCKER_CONTAINER_REGISTRY}/$PROJECT_ID/${_ARTIFACT_REGISTRY_REPO_NAME}/${_SERVICE_NAME}:$SHORT_SHA",
+        "${_DOCKER_CONTAINER_REGISTRY}/$PROJECT_ID/${_MONGO_SERVICE_ARTIFACT_REGISTRY_REPO_NAME}/${_SERVICE_NAME_MONGO}:$SHORT_SHA",
+      ]
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      [
+        "push",
+        "${_DOCKER_CONTAINER_REGISTRY}/$PROJECT_ID/${_CERTBOT_SERVICE_ARTIFACT_REGISTRY_REPO_NAME}/${_SERVICE_NAME_CERTBOT}:$SHORT_SHA",
+      ]
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      [
+        "push",
+        "${_DOCKER_CONTAINER_REGISTRY}/$PROJECT_ID/${_BIAP_CLIEN_NODE_JS_SERVICE_ARTIFACT_REGISTRY_REPO_NAME}/${_SERVICE_NAME_BIAP_CLIEN_NODE_JS}:$SHORT_SHA",
+      ]
+
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      [
+        "push",
+        "${_DOCKER_CONTAINER_REGISTRY}/$PROJECT_ID/${_PY_ONDC_PROTOCOL_SERVICE_ARTIFACT_REGISTRY_REPO_NAME}/${_SERVICE_NAME_PY_ONDC_PROTOCOL}:$SHORT_SHA",
+      ]
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      [
+        "push",
+        "${_DOCKER_CONTAINER_REGISTRY}/$PROJECT_ID/${_PY_ONDC_CONSUMER_SERVICE_ARTIFACT_REGISTRY_REPO_NAME}/${_SERVICE_NAME_PY_ONDC_CONSUMER}:$SHORT_SHA",
+      ]
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      [
+        "push",
+        "${_DOCKER_CONTAINER_REGISTRY}/$PROJECT_ID/${_RABBITMQ_SERVICE_ARTIFACT_REGISTRY_REPO_NAME}/${_SERVICE_NAME_RABBITMQ}:$SHORT_SHA",
       ]
 
   # Step 3: Deploy to Google Kubernetes Engine
@@ -55,15 +190,70 @@ steps:
     args:
       - "set"
       - "image"
-      - "deployment/${_SERVICE_NAME}"
-      - "${_SERVICE_NAME}=${_DOCKER_CONTAINER_REGISTRY}/$PROJECT_ID/${_ARTIFACT_REGISTRY_REPO_NAME}/${_SERVICE_NAME}:$SHORT_SHA"
+      - "deployment/${_SERVICE_NAME_MONGO}"
+      - "${_SERVICE_NAME_MONGO}=${_DOCKER_CONTAINER_REGISTRY}/$PROJECT_ID/${_MONGO_SERVICE_ARTIFACT_REGISTRY_REPO_NAME}/${_SERVICE_NAME_MONGO}:$SHORT_SHA"
+      - "--namespace=${_NAME_SPACE}"
+    env:
+      - "CLOUDSDK_COMPUTE_ZONE=${_GKE_ZONE}"
+      - "CLOUDSDK_CONTAINER_CLUSTER=${_GKE_CLUSTER_NAME}"
+  - name: "gcr.io/cloud-builders/kubectl"
+    args:
+      - "set"
+      - "image"
+      - "deployment/${_SERVICE_NAME_CERTBOT}"
+      - "${_SERVICE_NAME_CERTBOT}=${_DOCKER_CONTAINER_REGISTRY}/$PROJECT_ID/${_CERTBOT_SERVICE_ARTIFACT_REGISTRY_REPO_NAME}/${_SERVICE_NAME_CERTBOT}:$SHORT_SHA"
+      - "--namespace=${_NAME_SPACE}"
+    env:
+      - "CLOUDSDK_COMPUTE_ZONE=${_GKE_ZONE}"
+      - "CLOUDSDK_CONTAINER_CLUSTER=${_GKE_CLUSTER_NAME}"
+  - name: "gcr.io/cloud-builders/kubectl"
+    args:
+      - "set"
+      - "image"
+      - "deployment/${_SERVICE_NAME_BIAP_CLIEN_NODE_JS}"
+      - "${_SERVICE_NAME_BIAP_CLIEN_NODE_JS}=${_DOCKER_CONTAINER_REGISTRY}/$PROJECT_ID/${_BIAP_CLIEN_NODE_JS_SERVICE_ARTIFACT_REGISTRY_REPO_NAME}/${_SERVICE_NAME_BIAP_CLIEN_NODE_JS}:$SHORT_SHA"
+      - "--namespace=${_NAME_SPACE}"
+    env:
+      - "CLOUDSDK_COMPUTE_ZONE=${_GKE_ZONE}"
+      - "CLOUDSDK_CONTAINER_CLUSTER=${_GKE_CLUSTER_NAME}"
+  - name: "gcr.io/cloud-builders/kubectl"
+    args:
+      - "set"
+      - "image"
+      - "deployment/${_SERVICE_NAME_PY_ONDC_PROTOCOL}"
+      - "${_SERVICE_NAME_PY_ONDC_PROTOCOL}=${_DOCKER_CONTAINER_REGISTRY}/$PROJECT_ID/${_PY_ONDC_PROTOCOL_SERVICE_ARTIFACT_REGISTRY_REPO_NAME}/${_SERVICE_NAME_PY_ONDC_PROTOCOL}:$SHORT_SHA"
+      - "--namespace=${_NAME_SPACE}"
+    env:
+      - "CLOUDSDK_COMPUTE_ZONE=${_GKE_ZONE}"
+      - "CLOUDSDK_CONTAINER_CLUSTER=${_GKE_CLUSTER_NAME}"
+  - name: "gcr.io/cloud-builders/kubectl"
+    args:
+      - "set"
+      - "image"
+      - "deployment/${_SERVICE_NAME_PY_ONDC_CONSUMER}"
+      - "${_SERVICE_NAME_PY_ONDC_CONSUMER}=${_DOCKER_CONTAINER_REGISTRY}/$PROJECT_ID/${_PY_ONDC_CONSUMER_SERVICE_ARTIFACT_REGISTRY_REPO_NAME}/${_SERVICE_NAME_PY_ONDC_CONSUMER}:$SHORT_SHA"
+      - "--namespace=${_NAME_SPACE}"
+    env:
+      - "CLOUDSDK_COMPUTE_ZONE=${_GKE_ZONE}"
+      - "CLOUDSDK_CONTAINER_CLUSTER=${_GKE_CLUSTER_NAME}"
+  - name: "gcr.io/cloud-builders/kubectl"
+    args:
+      - "set"
+      - "image"
+      - "deployment/${_SERVICE_NAME_RABBITMQ}"
+      - "${_SERVICE_NAME_RABBITMQ}=${_DOCKER_CONTAINER_REGISTRY}/$PROJECT_ID/${_RABBITMQ_SERVICE_ARTIFACT_REGISTRY_REPO_NAME}/${_SERVICE_NAME_RABBITMQ}:$SHORT_SHA"
       - "--namespace=${_NAME_SPACE}"
     env:
       - "CLOUDSDK_COMPUTE_ZONE=${_GKE_ZONE}"
       - "CLOUDSDK_CONTAINER_CLUSTER=${_GKE_CLUSTER_NAME}"
 
 images:
-  - "${_DOCKER_CONTAINER_REGISTRY}/$PROJECT_ID/${_ARTIFACT_REGISTRY_REPO_NAME}/${_SERVICE_NAME}:$SHORT_SHA"
+  - "${_DOCKER_CONTAINER_REGISTRY}/$PROJECT_ID/${_MONGO_SERVICE_ARTIFACT_REGISTRY_REPO_NAME}/${_SERVICE_NAME_MONGO}:$SHORT_SHA"
+  - "${_DOCKER_CONTAINER_REGISTRY}/$PROJECT_ID/${_CERTBOT_SERVICE_ARTIFACT_REGISTRY_REPO_NAME}/${_SERVICE_NAME_CERTBOT}:$SHORT_SHA"
+  - "${_DOCKER_CONTAINER_REGISTRY}/$PROJECT_ID/${_BIAP_CLIEN_NODE_JS_SERVICE_ARTIFACT_REGISTRY_REPO_NAME}/${_SERVICE_NAME_BIAP_CLIEN_NODE_JS}:$SHORT_SHA"
+  - "${_DOCKER_CONTAINER_REGISTRY}/$PROJECT_ID/${_PY_ONDC_PROTOCOL_SERVICE_ARTIFACT_REGISTRY_REPO_NAME}/${_SERVICE_NAME_PY_ONDC_PROTOCOL}:$SHORT_SHA"
+  - "${_DOCKER_CONTAINER_REGISTRY}/$PROJECT_ID/${_PY_ONDC_CONSUMER_SERVICE_ARTIFACT_REGISTRY_REPO_NAME}/${_SERVICE_NAME_PY_ONDC_CONSUMER}:$SHORT_SHA"
+  - "${_DOCKER_CONTAINER_REGISTRY}/$PROJECT_ID/${_RABBITMQ_SERVICE_ARTIFACT_REGISTRY_REPO_NAME}/${_SERVICE_NAME_RABBITMQ}:$SHORT_SHA"
 
 timeout: "1600s"
 
@@ -76,8 +266,18 @@ substitutions:
   _GKE_ZONE: asia-south1
   _DOCKER_CONTAINER_REGISTRY: asia-south1-docker.pkg.dev
   _GKE_CLUSTER_NAME: hanabi-ondc-sdk-cluster
-  _SERVICE_NAME: hanabi-ondc-sdk
-  _ARTIFACT_REGISTRY_REPO_NAME: hanabi-ondc-sdk
+  _SERVICE_NAME_MONGO: hanabi-ondc-sdk-mongo
+  _SERVICE_NAME_CERTBOT: hanabi-ondc-sdk-certbot
+  _SERVICE_NAME_BIAP_CLIEN_NODE_JS: hanabi-ondc-sdk-biap-client-node-js
+  _SERVICE_NAME_PY_ONDC_PROTOCOL: hanabi-ondc-sdk-py-ondc-protocol
+  _SERVICE_NAME_PY_ONDC_CONSUMER: hanabi-ondc-sdk-py-protocol-consumer
+  _SERVICE_NAME_RABBITMQ: hanabi-ondc-sdk-rabbitmq
+  _MONGO_SERVICE_ARTIFACT_REGISTRY_REPO_NAME: hanabi-ondc-sdk-mongo
+  _CERTBOT_SERVICE_ARTIFACT_REGISTRY_REPO_NAME: hanabi-ondc-sdk-certbot
+  _BIAP_CLIEN_NODE_JS_SERVICE_ARTIFACT_REGISTRY_REPO_NAME: hanabi-ondc-sdk-biap-client-node-js
+  _PY_ONDC_PROTOCOL_SERVICE_ARTIFACT_REGISTRY_REPO_NAME: hanabi-ondc-sdk-py-ondc-protocol
+  _PY_ONDC_CONSUMER_SERVICE_ARTIFACT_REGISTRY_REPO_NAME: hanabi-ondc-sdk-py-ondc-consumer
+  _RABBITMQ_SERVICE_ARTIFACT_REGISTRY_REPO_NAME: hanabi-ondc-sdk-rabbitmq
   _NAME_SPACE: hanabi-ondc-sdk
   _SERVICE_ACCOUNT: 687184576367-compute@developer.gserviceaccount.com
   _ONDC_BASE_API_URL: https://ref-app-buyer-staging-v2.ondc.org
@@ -86,6 +286,8 @@ substitutions:
   _CITY: "*"
   _COUNTRY: IND
   _PROTOCOL_BASE_URL: https://ondc-protocol.hanabitech.com
+  _BAP_URL: https://ondc-protocol.hanabitech.com/protocol/v1
+  _BAP_ID: liveboxapp.com
   _REGISTRY_BASE_URL: https://staging.registry.ondc.org
   _ENV_TYPE: STAGING
   _BAP_FINDER_FEE_TYPE: percent
@@ -100,10 +302,8 @@ substitutions:
   _MONGO_DATABASE_HOST: mongo
   _VERIFICATION_ENABLE: "False"
   _RABBITMQ_HOST: rabbitmq
-  # _BAP_ID: This is substituted in Cloud Build trigger setup
-  # _BAP_URL: This is substituted in Cloud Build trigger setup
-  # _JUSPAY_BASE_URL: This is substituted in Cloud Build trigger setup
-  # _JUSPAY_MERCHANT_ID: This is substituted in Cloud Build trigger setup
+  _JUSPAY_BASE_URL: https://sandbox.juspay.in
+  _JUSPAY_MERCHANT_ID: liveboxapp
   # _JUSPAY_API_KEY: This is substituted in Cloud Build trigger setup
   # _JUSPAY_WEBHOOK_USERNAME: This is substituted in Cloud Build trigger setup
   # _JUSPAY_WEBHOOK_PASSWORD: This is substituted in Cloud Build trigger setup
