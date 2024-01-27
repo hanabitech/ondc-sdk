@@ -11,7 +11,7 @@
 	branch = master
 [submodule "py-ondc-protocol"]
 	path = py-ondc-protocol
-	url = https://github.com/ONDC-Official/py-protocol-layer.git
+	url = https://github.com/hanabitech/py-protocol-layer
 	branch = master
 [submodule "biap-igm-node-js"]
 	path = biap-igm-node-js
