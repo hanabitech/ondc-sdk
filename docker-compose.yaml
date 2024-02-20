@@ -162,7 +162,9 @@ services:
       dockerfile: Dockerfile
     container_name: py-ondc-protocol
     environment:
+      DOMAIN: ${DOMAIN}
       ENV: ${PROTOCOL_ENV}
+      REGISTRY_BASE_URL: ${REGISTRY_BASE_URL}
       MONGO_DATABASE_HOST: ${MONGO_DATABASE_HOST}
       BAP_URL: ${BAP_URL}
       CLIENT_WEBHOOK_ENDPOINT: ${CLIENT_WEBHOOK_ENDPOINT}
