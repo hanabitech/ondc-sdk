@@ -7,7 +7,7 @@ services:
     ports:
       - 27017:27017
     volumes:
-      - "./data:/data/db"
+      - mongo-data:/data/db
 
   # mmi-client:
   #   image: navdeep710/ondc-ancillary-services:v3
@@ -245,3 +245,6 @@ services:
   #   ports:
   #     - "90:80"
   #     - "5989:5900"
+
+volumes:
+    mongo-data:
