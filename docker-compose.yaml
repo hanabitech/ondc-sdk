@@ -99,7 +99,7 @@ services:
         BAP_PUBLIC_KEY: ${BAP_PUBLIC_KEY}
         BAP_UNIQUE_KEY_ID: ${BAP_UNIQUE_KEY_ID}
         PORT: 3000
-        NODE_DEV: dev
+        NODE_ENV: prod
         REGISTRY_BASE_URL: ${REGISTRY_BASE_URL}
         ENV_TYPE: ${ENV_TYPE}
         BAP_FINDER_FEE_TYPE: ${BAP_FINDER_FEE_TYPE}
