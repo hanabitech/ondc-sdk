@@ -116,8 +116,8 @@ services:
       - 3000:3000
     expose:
       - 3000
-    depends_on:
-      - mongo
+    # depends_on:
+    #   - mongo
 
   # biap-igm-node-js:
   #   build:
@@ -189,7 +189,7 @@ services:
     container_name: bap-protocol-consumer
     depends_on:
       - rabbitmq
-      - mongo
+      # - mongo
     environment:
       ENV: ${PROTOCOL_ENV}
       RABBITMQ_HOST: ${RABBITMQ_HOST}
