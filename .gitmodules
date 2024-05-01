@@ -1,7 +1,3 @@
-[submodule "biap-app-ui-front"]
-	path = biap-app-ui-front
-	url = https://github.com/ONDC-Official/biap-app-ui-front.git
-	branch = master
 [submodule "ondc-mmi-service"]
 	path = ondc-mmi-service
 	url = https://github.com/ONDC-Official/mmi-service-template.git
