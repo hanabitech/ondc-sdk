@@ -1,14 +1,6 @@
 version: "2"
 
 services:
-  # mongo:
-  #   image: mongo
-  #   restart: always
-  #   ports:
-  #     - 27017:27017
-  #   volumes:
-  #     - mongo-data:/data/db
-
   # mmi-client:
   #   image: navdeep710/ondc-ancillary-services:v3
   #   container_name: map-client
@@ -116,8 +108,6 @@ services:
       - 3000:3000
     expose:
       - 3000
-    # depends_on:
-    #   - mongo
 
   biap-igm-node-js:
     build:
@@ -136,8 +126,6 @@ services:
       BAP_ID: ${BAP_ID}
       EXPECTED_RESPONSE_TIME: ${EXPECTED_RESPONSE_TIME}
       EXPECTED_RESOLUTION_TIME: ${EXPECTED_RESOLUTION_TIME}
-      # BUGZILLA_API_KEY: ${BUGZILLA_API_KEY}
-      # BUGZILLA_SERVICE_URI: ${BUGZILLA_SERVICE_URI}
       BAP_URL: ${BAP_URL}
       VOLUME_IMAGES_BASE_URL: ${VOLUME_IMAGES_BASE_URL}
       LOG_LEVEL: ${LOG_LEVEL}
@@ -147,8 +135,6 @@ services:
       - "8989:6969"
     expose:
       - 8989
-    # depends_on:
-    #   - mongo
     volumes:
       - "./images:/app/images"
     restart: always
@@ -222,9 +208,6 @@ services:
       dockerfile: Dockerfile.production
     environment:
       ENV: prod
-      # BUGZILLA_API_KEY: ${BUGZILLA_API_KEY}
-      # BUGZILLA_BASE_URI: ${BUGZILLA_BASE_URI}
-      # BUGZILLA_ADMIN_EMAIL: ${BUGZILLA_ADMIN_EMAIL}
       LOG_LEVEL: ${LOG_LEVEL}
       SELECTED_ISSUE_CRM: ${SELECTED_ISSUE_CRM}
       TRUDESK_USERNAME: ${TRUDESK_USERNAME}
@@ -235,24 +218,6 @@ services:
     expose:
       - 8001
     restart: always
-
-  # bugzilla-dev-service:
-  #   logging:
-  #     driver: "json-file"
-  #     options:
-  #       max-size: "100m"
-  #       max-file: "3"
-  #   build:
-  #     context: ./biap-bugzilla-service/bugzilla-main
-  #     dockerfile: Dockerfile
-  #   environment:
-  #     BUGZILLA_WWW: /var/www/html/bugzilla/
-  #     BUGZILLA_ADMIN_EMAIL: ${BUGZILLA_ADMIN_EMAIL}
-  #   container_name: bugzilla-dev-service
-  #   image: shameerkc/bugzilla-dev-sqlite
-  #   ports:
-  #     - "90:80"
-  #     - "5989:5900"
 
   trudesk-dev-service:
     image: polonel/trudesk:1
@@ -294,4 +259,3 @@ volumes:
   trudesk_uploads:
   trudesk_backups:
   elasticsearch:
-#     mongo-data:
