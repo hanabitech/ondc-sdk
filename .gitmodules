@@ -16,8 +16,8 @@
 [submodule "biap-igm-node-js"]
 	path = biap-igm-node-js
 	url = https://github.com/hanabitech/biap-igm-node-js.git
-	branch = main
+	branch = feature/v1.2.0
 [submodule "biap-bugzilla-service"]
 	path = biap-bugzilla-service
 	url = https://github.com/hanabitech/biap-bugzilla-service
-	branch = main
+	branch = feat/trudesk
