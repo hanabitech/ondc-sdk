@@ -130,6 +130,7 @@ services:
       VOLUME_IMAGES_BASE_URL: ${VOLUME_IMAGES_BASE_URL}
       LOG_LEVEL: ${LOG_LEVEL}
       SELECTED_ISSUE_CRM: ${SELECTED_ISSUE_CRM}
+      BUGZILLA_SERVICE_URI: ${BUGZILLA_SERVICE_URI}
     container_name: biap-igm-node-js
     ports:
       - "8989:6969"
