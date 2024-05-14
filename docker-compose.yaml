@@ -1,14 +1,6 @@
-version: '2'
+version: "2"
 
 services:
-  # mongo:
-  #   image: mongo
-  #   restart: always
-  #   ports:
-  #     - 27017:27017
-  #   volumes:
-  #     - mongo-data:/data/db
-
   # mmi-client:
   #   image: navdeep710/ondc-ancillary-services:v3
   #   container_name: map-client
@@ -116,40 +108,38 @@ services:
       - 3000:3000
     expose:
       - 3000
-    # depends_on:
-    #   - mongo
 
-  # biap-igm-node-js:
-  #   build:
-  #     context: biap-igm-node-js
-  #   logging:
-  #     driver: "json-file"
-  #     options:
-  #       max-size: "100m"
-  #       max-file: "3"
-  #   environment:
-  #     DB_CONNECTION_STRING: ${DB_CONNECTION_STRING}
-  #     PROTOCOL_BASE_URL: ${PROTOCOL_BASE_URL}
-  #     SSE_TIMEOUT: ${SSE_TIMEOUT}
-  #     DOMAIN: ${DOMAIN}
-  #     COUNTRY: ${COUNTRY}
-  #     BAP_ID: ${BAP_ID}
-  #     EXPECTED_RESPONSE_TIME: ${EXPECTED_RESPONSE_TIME}
-  #     EXPECTED_RESOLUTION_TIME: ${EXPECTED_RESOLUTION_TIME}
-  #     BUGZILLA_API_KEY: ${BUGZILLA_API_KEY}
-  #     BUGZILLA_SERVICE_URI: ${BUGZILLA_SERVICE_URI}
-  #     BAP_URL: ${BAP_URL}
-  #     VOLUME_IMAGES_BASE_URL: ${VOLUME_IMAGES_BASE_URL}
-  #   container_name: biap-igm-node-js
-  #   ports:
-  #     - "8989:6969"
-  #   expose:
-  #     - 8989
-  #   depends_on:
-  #     - mongo
-  #   volumes:
-  #     - "./images:/app/images"
-  #   restart: always
+  biap-igm-node-js:
+    build:
+      context: biap-igm-node-js
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "3"
+    environment:
+      DB_CONNECTION_STRING: ${DB_CONNECTION_STRING}
+      PROTOCOL_BASE_URL: ${PROTOCOL_BASE_URL}
+      SSE_TIMEOUT: ${SSE_TIMEOUT}
+      DOMAIN: ${DOMAIN}
+      COUNTRY: ${COUNTRY}
+      BAP_ID: ${BAP_ID}
+      EXPECTED_RESPONSE_TIME: ${EXPECTED_RESPONSE_TIME}
+      EXPECTED_RESOLUTION_TIME: ${EXPECTED_RESOLUTION_TIME}
+      BAP_URL: ${BAP_URL}
+      VOLUME_IMAGES_BASE_URL: ${VOLUME_IMAGES_BASE_URL}
+      LOG_LEVEL: ${LOG_LEVEL}
+      SELECTED_ISSUE_CRM: ${SELECTED_ISSUE_CRM}
+      BUGZILLA_SERVICE_URI: ${BUGZILLA_SERVICE_URI}
+      FIREBASE_ADMIN_SERVICE_ACCOUNT: ${FIREBASE_ADMIN_SERVICE_ACCOUNT}
+    container_name: biap-igm-node-js
+    ports:
+      - "8989:6969"
+    expose:
+      - 8989
+    volumes:
+      - "./images:/app/images"
+    restart: always
 
   py-ondc-protocol:
     logging:
@@ -208,45 +198,66 @@ services:
       - 5672:5672
       - 15672:15672
 
+  bugzilla-node-backend:
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "3"
+    container_name: bugzilla-node-dev
+    build:
+      context: biap-bugzilla-service
+      dockerfile: Dockerfile.production
+    environment:
+      ENV: prod
+      LOG_LEVEL: ${LOG_LEVEL}
+      SELECTED_ISSUE_CRM: ${SELECTED_ISSUE_CRM}
+      TRUDESK_USERNAME: ${TRUDESK_USERNAME}
+      TRUDESK_PASSWORD: ${TRUDESK_PASSWORD}
+      TRUDESK_BASE_URI: ${TRUDESK_BASE_URI}
+    ports:
+      - "8001:8001"
+    expose:
+      - 8001
+    restart: always
 
-  # bugzilla-node-backend:
-  #   logging:
-  #     driver: "json-file"
-  #     options:
-  #       max-size: "100m"
-  #       max-file: "3"
-  #   container_name: bugzilla-node-dev
-  #   build:
-  #     context: biap-bugzilla-service
-  #     dockerfile: Dockerfile.production
-  #   environment:
-  #     ENV: prod
-  #     BUGZILLA_API_KEY: ${BUGZILLA_API_KEY}
-  #     BUGZILLA_BASE_URI: ${BUGZILLA_BASE_URI}
-  #     BUGZILLA_ADMIN_EMAIL: ${BUGZILLA_ADMIN_EMAIL}
-  #   ports:
-  #     - "8001:8001"
-  #   expose:
-  #     - 8001
-  #   restart: always
+  trudesk-dev-service:
+    image: polonel/trudesk:1
+    restart: always
+    ports:
+      - "8118:8118"
+    dns:
+      - "1.1.1.1"
+      - "8.8.8.8"
+    environment:
+      NODE_ENV: production
+      TRUDESK_DOCKER: "true"
+      TD_MONGODB_URI: ${TD_MONGODB_URI}
+      USE_XFORWARDIP: "true"
+    volumes:
+      - trudesk_uploads:/usr/src/trudesk/public/uploads
+      - trudesk_backups:/usr/src/trudesk/backups
 
-  # bugzilla-dev-service:
-  #   logging:
-  #     driver: "json-file"
-  #     options:
-  #       max-size: "100m"
-  #       max-file: "3"
-  #   build:
-  #     context: ./biap-bugzilla-service/bugzilla-main
-  #     dockerfile: Dockerfile
-  #   environment:
-  #     BUGZILLA_WWW: /var/www/html/bugzilla/
-  #     BUGZILLA_ADMIN_EMAIL: ${BUGZILLA_ADMIN_EMAIL}
-  #   container_name: bugzilla-dev-service
-  #   image: shameerkc/bugzilla-dev-sqlite
-  #   ports:
-  #     - "90:80"
-  #     - "5989:5900"
+  elasticsearch:
+    image: elasticsearch:8.0.0
+    restart: always
+    environment:
+      - xpack.security.enabled=false
+      - xpack.security.http.ssl.enabled=false
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+    mem_limit: 1073741824
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+      - elasticsearch:/usr/share/elasticsearch/data
 
-# volumes:
-#     mongo-data:
+volumes:
+  trudesk_uploads:
+  trudesk_backups:
+  elasticsearch:
