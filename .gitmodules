@@ -17,3 +17,7 @@
 	path = biap-bugzilla-service
 	url = https://github.com/hanabitech/biap-bugzilla-service
 	branch = feat/trudesk
+[submodule "ondc-cron-jobs"]
+	path = ondc-cron-jobs
+	url = https://github.com/hanabitech/ondc-cron-jobs
+	branch = main
