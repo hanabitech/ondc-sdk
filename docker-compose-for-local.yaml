@@ -8,6 +8,19 @@ services:
       - 27017:27017
     volumes:
       - mongo-data:/data/db
+    
+  ondc-cron-jobs:
+    build: 
+      context: ondc-cron-jobs
+      dockerfile: Dockerfile
+    environment:
+      X_API_KEY: ${X_API_KEY}
+      PROTOCOL_BASE_URL: ${PROTOCOL_BASE_URL}
+      DB_CONNECTION_STRING: ${DB_CONNECTION_STRING}
+    depends_on:
+      - mongo
+      - py-ondc-protocol
+      - py-protocol-consumer
 
   # mmi-client:
   #   image: navdeep710/ondc-ancillary-services:v3
@@ -16,11 +29,11 @@ services:
   #     ENV: prod
   #     MMI_CLIENT_ID: ${MMI_CLIENT_ID}
   #     MMI_CLIENT_SECRET: ${MMI_CLIENT_SECRET}
-  #     MMI_ADVANCE_API_KEY: ${MMI_ADVANCE_API_KEY}
-  #     KNOWLARITY_NUMBER: ${KNOWLARITY_NUMBER}
-  #     KNOWLARITY_AGENT_NUMBER: ${KNOWLARITY_AGENT_NUMBER}
-  #     KNOWLARITY_API_KEY: ${KNOWLARITY_API_KEY}
-  #     KNOWLARITY_AUTHORIZATION_HEADER_KEY: ${KNOWLARITY_AUTHORIZATION_HEADER_KEY}
+  #     # MMI_ADVANCE_API_KEY: ${MMI_ADVANCE_API_KEY}
+  #     # KNOWLARITY_NUMBER: ${KNOWLARITY_NUMBER}
+  #     # KNOWLARITY_AGENT_NUMBER: ${KNOWLARITY_AGENT_NUMBER}
+  #     # KNOWLARITY_API_KEY: ${KNOWLARITY_API_KEY}
+  #     # KNOWLARITY_AUTHORIZATION_HEADER_KEY: ${KNOWLARITY_AUTHORIZATION_HEADER_KEY}
   #   ports:
   #     - 8000:8000
   #   expose:
@@ -70,71 +83,72 @@ services:
   #     - ./data/certbot/www:/var/www/certbot
   #   entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
 
-  biap-client-node-js:
-    restart: "always"
-    build:
-      context: biap-client-node-js
-      args:
-        JUSPAY_SECRET_KEY_PATH: ${JUSPAY_SECRET_KEY_PATH}
-        JUSPAY_BASE_URL: ${JUSPAY_BASE_URL}
-        JUSPAY_MERCHANT_ID: ${JUSPAY_MERCHANT_ID}
-        JUSPAY_API_KEY: ${JUSPAY_API_KEY}
-        FIREBASE_ADMIN_SERVICE_ACCOUNT: ${FIREBASE_ADMIN_SERVICE_ACCOUNT}
-        ONDC_BASE_API_URL: ${ONDC_BASE_API_URL}
-        JUSPAY_WEBHOOK_USERNAME: ${JUSPAY_WEBHOOK_USERNAME}
-        JUSPAY_WEBHOOK_PASSWORD: ${JUSPAY_WEBHOOK_PASSWORD}
-        DOMAIN: ${DOMAIN}
-        CITY: ${CITY}
-        COUNTRY: ${COUNTRY}
-        BAP_ID: ${BAP_ID}
-        BAP_URL: ${BAP_URL}
-        PROTOCOL_BASE_URL: ${PROTOCOL_BASE_URL}
-        DB_CONNECTION_STRING: ${DB_CONNECTION_STRING}
-        BAP_PRIVATE_KEY: ${BAP_PRIVATE_KEY}
-        BAP_PUBLIC_KEY: ${BAP_PUBLIC_KEY}
-        BAP_UNIQUE_KEY_ID: ${BAP_UNIQUE_KEY_ID}
-        PORT: 3939
-        NODE_DEV: dev
-        REGISTRY_BASE_URL: ${REGISTRY_BASE_URL}
-        ENV_TYPE: ${ENV_TYPE}
-        BAP_FINDER_FEE_TYPE: ${BAP_FINDER_FEE_TYPE}
-        BAP_FINDER_FEE_AMOUNT: ${BAP_FINDER_FEE_AMOUNT}
-        SSE_TIMEOUT: ${SSE_TIMEOUT}
-    ports:
-      - "3939:3939"
-    expose:
-      - 3939
-    depends_on:
-      - mongo
+  # biap-client-node-js:
+  #   restart: "always"
+  #   build:
+  #     context: biap-client-node-js
+  #     args:
+  #       JUSPAY_SECRET_KEY_PATH: ${JUSPAY_SECRET_KEY_PATH}
+  #       JUSPAY_BASE_URL: ${JUSPAY_BASE_URL}
+  #       JUSPAY_MERCHANT_ID: ${JUSPAY_MERCHANT_ID}
+  #       JUSPAY_API_KEY: ${JUSPAY_API_KEY}
+  #       FIREBASE_ADMIN_SERVICE_ACCOUNT: ${FIREBASE_ADMIN_SERVICE_ACCOUNT}
+  #       ONDC_BASE_API_URL: ${ONDC_BASE_API_URL}
+  #       JUSPAY_WEBHOOK_USERNAME: ${JUSPAY_WEBHOOK_USERNAME}
+  #       JUSPAY_WEBHOOK_PASSWORD: ${JUSPAY_WEBHOOK_PASSWORD}
+  #       DOMAIN: ${DOMAIN}
+  #       CITY: ${CITY}
+  #       COUNTRY: ${COUNTRY}
+  #       BAP_ID: ${BAP_ID}
+  #       BAP_URL: ${BAP_URL}
+  #       PROTOCOL_BASE_URL: ${PROTOCOL_BASE_URL}
+  #       DB_CONNECTION_STRING: ${DB_CONNECTION_STRING}
+  #       BAP_PRIVATE_KEY: ${BAP_PRIVATE_KEY}
+  #       BAP_PUBLIC_KEY: ${BAP_PUBLIC_KEY}
+  #       BAP_UNIQUE_KEY_ID: ${BAP_UNIQUE_KEY_ID}
+  #       PORT: 3939
+  #       NODE_DEV: dev
+  #       REGISTRY_BASE_URL: ${REGISTRY_BASE_URL}
+  #       ENV_TYPE: ${ENV_TYPE}
+  #       BAP_FINDER_FEE_TYPE: ${BAP_FINDER_FEE_TYPE}
+  #       BAP_FINDER_FEE_AMOUNT: ${BAP_FINDER_FEE_AMOUNT}
+  #       SSE_TIMEOUT: ${SSE_TIMEOUT}
+  #   ports:
+  #     - "3939:3939"
+  #   expose:
+  #     - 3939
+  #   depends_on:
+  #     - mongo
 
-  biap-igm-node-js:
-    build:
-      context: biap-igm-node-js
-    environment:
-      DB_CONNECTION_STRING: ${DB_CONNECTION_STRING}
-      PROTOCOL_BASE_URL: ${PROTOCOL_BASE_URL}
-      SSE_TIMEOUT: ${SSE_TIMEOUT}
-      DOMAIN: ${DOMAIN}
-      COUNTRY: ${COUNTRY}
-      BAP_ID: ${BAP_ID}
-      EXPECTED_RESPONSE_TIME: ${EXPECTED_RESPONSE_TIME}
-      EXPECTED_RESOLUTION_TIME: ${EXPECTED_RESOLUTION_TIME}
-      BUGZILLA_API_KEY: ${BUGZILLA_API_KEY}
-      BUGZILLA_SERVICE_URI: ${BUGZILLA_SERVICE_URI}
-      BAP_URL: ${BAP_URL}
-      VOLUME_IMAGES_BASE_URL: ${VOLUME_IMAGES_BASE_URL}
-      LOG_LEVEL: ${LOG_LEVEL}
-      SELECTED_ISSUE_CRM: ${SELECTED_ISSUE_CRM}
-    container_name: biap-igm-node-js
-    ports:
-      - "8989:6969"
-    expose:
-      - 8989
-    depends_on:
-      - mongo
-    volumes:
-      - "./images:/app/images"
-    restart: always
+  # biap-igm-node-js:
+  #   build:
+  #     context: biap-igm-node-js
+  #   environment:
+  #     DB_CONNECTION_STRING: ${DB_CONNECTION_STRING}
+  #     PROTOCOL_BASE_URL: ${PROTOCOL_BASE_URL}
+  #     SSE_TIMEOUT: ${SSE_TIMEOUT}
+  #     DOMAIN: ${DOMAIN}
+  #     COUNTRY: ${COUNTRY}
+  #     BAP_ID: ${BAP_ID}
+  #     EXPECTED_RESPONSE_TIME: ${EXPECTED_RESPONSE_TIME}
+  #     EXPECTED_RESOLUTION_TIME: ${EXPECTED_RESOLUTION_TIME}
+  #     BUGZILLA_API_KEY: ${BUGZILLA_API_KEY}
+  #     BUGZILLA_SERVICE_URI: ${BUGZILLA_SERVICE_URI}
+  #     BAP_URL: ${BAP_URL}
+  #     VOLUME_IMAGES_BASE_URL: ${VOLUME_IMAGES_BASE_URL}
+  #     LOG_LEVEL: ${LOG_LEVEL}
+  #     SELECTED_ISSUE_CRM: ${SELECTED_ISSUE_CRM}
+  #     FIREBASE_ADMIN_SERVICE_ACCOUNT: ${FIREBASE_ADMIN_SERVICE_ACCOUNT}
+  #   container_name: biap-igm-node-js
+  #   ports:
+  #     - "8989:6969"
+  #   expose:
+  #     - 8989
+  #   depends_on:
+  #     - mongo
+  #   volumes:
+  #     - "./images:/app/images"
+  #   restart: always
 
   py-ondc-protocol:
     logging:
@@ -193,66 +207,66 @@ services:
       BAP_ID: ${BAP_ID}
       FLASK_SERVER: "False"
 
-  bugzilla-node-backend:
-    container_name: bugzilla-node-dev
-    build:
-      context: biap-bugzilla-service
-      dockerfile: Dockerfile.production
-    environment:
-      ENV: prod
-      BUGZILLA_API_KEY: ${BUGZILLA_API_KEY}
-      BUGZILLA_BASE_URI: ${BUGZILLA_BASE_URI}
-      BUGZILLA_ADMIN_EMAIL: ${BUGZILLA_ADMIN_EMAIL}
-      LOG_LEVEL: ${LOG_LEVEL}
-      SELECTED_ISSUE_CRM: ${SELECTED_ISSUE_CRM}
-      TRUDESK_USERNAME: ${TRUDESK_USERNAME}
-      TRUDESK_PASSWORD: ${TRUDESK_PASSWORD}
-      TRUDESK_BASE_URI: ${TRUDESK_BASE_URI}
-    ports:
-      - "8001:8001"
-    expose:
-      - 8001
-    restart: always
+  # bugzilla-node-backend:
+  #   container_name: bugzilla-node-dev
+  #   build:
+  #     context: biap-bugzilla-service
+  #     dockerfile: Dockerfile.production
+  #   environment:
+  #     ENV: prod
+  #     BUGZILLA_API_KEY: ${BUGZILLA_API_KEY}
+  #     BUGZILLA_BASE_URI: ${BUGZILLA_BASE_URI}
+  #     BUGZILLA_ADMIN_EMAIL: ${BUGZILLA_ADMIN_EMAIL}
+  #     LOG_LEVEL: ${LOG_LEVEL}
+  #     SELECTED_ISSUE_CRM: ${SELECTED_ISSUE_CRM}
+  #     TRUDESK_USERNAME: ${TRUDESK_USERNAME}
+  #     TRUDESK_PASSWORD: ${TRUDESK_PASSWORD}
+  #     TRUDESK_BASE_URI: ${TRUDESK_BASE_URI}
+  #   ports:
+  #     - "8001:8001"
+  #   expose:
+  #     - 8001
+  #   restart: always
 
-  trudesk-dev-service:
-    image: polonel/trudesk:1
-    restart: always
-    ports:
-      - "8118:8118"
-    dns:
-      - "1.1.1.1"
-      - "8.8.8.8"
-    environment:
-      NODE_ENV: production
-      TRUDESK_DOCKER: "true"
-      TD_MONGODB_SERVER: mongo
-      TD_MONGODB_DATABASE: trudesk
-      USE_XFORWARDIP: "true"
-    volumes:
-      - trudesk_uploads:/usr/src/trudesk/public/uploads
-      - trudesk_backups:/usr/src/trudesk/backups
+  # trudesk-dev-service:
+  #   image: polonel/trudesk:1
+  #   restart: always
+  #   ports:
+  #     - "8118:8118"
+  #   dns:
+  #     - "1.1.1.1"
+  #     - "8.8.8.8"
+  #   environment:
+  #     NODE_ENV: production
+  #     TRUDESK_DOCKER: "true"
+  #     TD_MONGODB_SERVER: mongo
+  #     TD_MONGODB_DATABASE: trudesk
+  #     USE_XFORWARDIP: "true"
+  #   volumes:
+  #     - trudesk_uploads:/usr/src/trudesk/public/uploads
+  #     - trudesk_backups:/usr/src/trudesk/backups
 
-  elasticsearch:
-    image: elasticsearch:8.0.0
-    restart: always
-    environment:
-      - xpack.security.enabled=false
-      - xpack.security.http.ssl.enabled=false
-      - discovery.type=single-node
-      - bootstrap.memory_lock=true
-    mem_limit: 1073741824
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-    ports:
-      - "9200:9200"
-      - "9300:9300"
-    volumes:
-      - elasticsearch:/usr/share/elasticsearch/data
+  # elasticsearch:
+  #   image: elasticsearch:8.0.0
+  #   restart: always
+  #   environment:
+  #     - xpack.security.enabled=false
+  #     - xpack.security.http.ssl.enabled=false
+  #     - discovery.type=single-node
+  #     - bootstrap.memory_lock=true
+  #   mem_limit: 1073741824
+  #   ulimits:
+  #     memlock:
+  #       soft: -1
+  #       hard: -1
+  #   ports:
+  #     - "9200:9200"
+  #     - "9300:9300"
+  #   volumes:
+  #     - elasticsearch:/usr/share/elasticsearch/data
 
 volumes:
-  trudesk_uploads:
-  trudesk_backups:
   mongo-data:
-  elasticsearch:
+  # trudesk_uploads:
+  # trudesk_backups:
+  # elasticsearch:
