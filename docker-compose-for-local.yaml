@@ -9,6 +9,19 @@ services:
     volumes:
       - mongo-data:/data/db
 
+  ondc-cron-jobs:
+    build:
+      context: ondc-cron-jobs
+      dockerfile: Dockerfile
+    environment:
+      X_API_KEY: ${X_API_KEY}
+      PROTOCOL_BASE_URL: ${PROTOCOL_BASE_URL}
+      DB_CONNECTION_STRING: ${DB_CONNECTION_STRING}
+    depends_on:
+      - mongo
+      - py-ondc-protocol
+      - py-protocol-consumer
+
   # mmi-client:
   #   image: navdeep710/ondc-ancillary-services:v3
   #   container_name: map-client

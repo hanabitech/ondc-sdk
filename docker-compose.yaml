@@ -59,6 +59,18 @@ services:
   #     - ./data/certbot/conf:/etc/letsencrypt
   #     - ./data/certbot/www:/var/www/certbot
 
+  ondc-cron-jobs:
+    build: 
+      context: ondc-cron-jobs
+      dockerfile: Dockerfile
+    environment:
+      X_API_KEY: ${X_API_KEY}
+      PROTOCOL_BASE_URL: ${PROTOCOL_BASE_URL}
+      DB_CONNECTION_STRING: ${DB_CONNECTION_STRING}
+    depends_on:
+      - py-ondc-protocol
+      - py-protocol-consumer
+
   certbot:
     image: certbot/certbot
     restart: "always"
