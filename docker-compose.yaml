@@ -60,7 +60,7 @@ services:
   #     - ./data/certbot/www:/var/www/certbot
 
   ondc-cron-jobs:
-    build: 
+    build:
       context: ondc-cron-jobs
       dockerfile: Dockerfile
     environment:
@@ -179,6 +179,7 @@ services:
       RABBITMQ_HOST: ${RABBITMQ_HOST}
       FLASK_SERVER: "True"
       QUEUE_ENABLE: "True"
+      EXPECTED_RESPONSE_TIME: ${EXPECTED_RESPONSE_TIME}
     ports:
       - 5555:5555
     expose:
