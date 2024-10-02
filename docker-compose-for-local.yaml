@@ -138,6 +138,7 @@ services:
       VOLUME_IMAGES_BASE_URL: ${VOLUME_IMAGES_BASE_URL}
       LOG_LEVEL: ${LOG_LEVEL}
       SELECTED_ISSUE_CRM: ${SELECTED_ISSUE_CRM}
+      FIREBASE_ADMIN_SERVICE_ACCOUNT: ${FIREBASE_ADMIN_SERVICE_ACCOUNT}
     container_name: biap-igm-node-js
     ports:
       - "8989:6969"
@@ -175,6 +176,7 @@ services:
       RABBITMQ_HOST: ${RABBITMQ_HOST}
       FLASK_SERVER: "True"
       QUEUE_ENABLE: "True"
+      EXPECTED_RESPONSE_TIME: ${EXPECTED_RESPONSE_TIME}
     ports:
       - 5555:5555
     expose:
