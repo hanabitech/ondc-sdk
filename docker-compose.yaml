@@ -181,6 +181,7 @@ services:
       FLASK_SERVER: "True"
       QUEUE_ENABLE: "True"
       EXPECTED_RESPONSE_TIME: ${EXPECTED_RESPONSE_TIME}
+      TTL_IN_SECONDS: ${TTL_IN_SECONDS}
     ports:
       - 5555:5555
     expose:
