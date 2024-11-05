@@ -112,6 +112,7 @@ services:
         ENV_TYPE: ${ENV_TYPE}
         BAP_FINDER_FEE_TYPE: ${BAP_FINDER_FEE_TYPE}
         BAP_FINDER_FEE_AMOUNT: ${BAP_FINDER_FEE_AMOUNT}
+        BAP_TAX_NUMBER: ${BAP_TAX_NUMBER}
         SSE_TIMEOUT: ${SSE_TIMEOUT}
     ports:
       - "3939:3939"
